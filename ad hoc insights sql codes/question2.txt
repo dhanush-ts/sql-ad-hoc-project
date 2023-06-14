@@ -1,0 +1,11 @@
+with cte1 as
+(select count(distinct fact_gross_price.product_code) unique_prod_2020
+from dim_product join fact_gross_price where fiscal_year=2020),
+
+cte2 as
+(select count(distinct fact_gross_price.product_code) unique_prod_2021
+from dim_product join fact_gross_price where fiscal_year=2021)
+
+select unique_prod_2020,unique_prod_2021,
+concat(round((unique_prod_2021-unique_prod_2020)*100/unique_prod_2020,2),"%") percentage_chg 
+from cte1,cte2

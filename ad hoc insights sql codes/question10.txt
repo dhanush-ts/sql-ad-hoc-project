@@ -1,0 +1,7 @@
+with cte1 as
+(SELECT division,product_code,concat(product," || ",variant) product,sum(sold_quantity) sold_quantity,
+row_number() over(partition by division order by sum(sold_quantity) desc) rnk
+FROM fact_sales_monthly join dim_product p using (product_code) where fiscal_year=2021
+group by division,product_code)
+
+select * from cte1 where rnk<=3

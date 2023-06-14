@@ -1,0 +1,2 @@
+SELECT distinct market from dim_customer where customer="atliq exclusive" 
+and region="apac" order by market

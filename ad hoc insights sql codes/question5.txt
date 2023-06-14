@@ -1,0 +1,3 @@
+select product_code,product,concat(manufacturing_cost," ","$") manufacturing_cost from fact_manufacturing_cost join dim_product
+using (product_code) where manufacturing_cost in ((select min(manufacturing_cost) from fact_manufacturing_cost),
+(select max(manufacturing_cost) from fact_manufacturing_cost)) order by manufacturing_cost desc

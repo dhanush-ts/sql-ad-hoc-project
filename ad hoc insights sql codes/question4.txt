@@ -1,0 +1,12 @@
+with cte1 as
+(select segment,count(distinct product_code) product_count_2020 from dim_product join fact_gross_price
+using (product_code) where fiscal_year=2020
+group by segment),
+cte2 as
+(select segment,count(distinct product_code) product_count_2021 from dim_product join fact_gross_price
+using (product_code) where fiscal_year=2021
+group by segment)
+
+select cte1.segment,product_count_2020,product_count_2021,
+(product_count_2021-product_count_2020) differnce from cte1 join cte2 using (segment)
+order by differnce desc

@@ -1,0 +1,10 @@
+with cte1 as
+(select sum(sold_quantity*gross_price)/1000000 pct from fact_sales_monthly 
+join fact_gross_price using(product_code,fiscal_year) where fiscal_year=2021),
+cte2 as
+(SELECT channel,round(sum(sold_quantity*gross_price/1000000),2) gross_price_mln from dim_customer
+join fact_sales_monthly using (customer_code) join fact_gross_price using (product_code,fiscal_year)
+where fiscal_year=2021 group by channel)
+
+select channel,concat(gross_price_mln,"M") gross_price_mln,concat(round(gross_price_mln*100/pct,2),"%") pct
+from cte1,cte2 order by pct desc
